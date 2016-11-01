@@ -1,4 +1,5 @@
 package com.example.bogda.sunshine;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +43,7 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        String[] forecastArray = {
+        final String[] forecastArray = {
                 "Today - Sunny - 88/63",
                 "Tomorrow - Foggy - 70/46",
                 "Weds - Cloudy - 72/63",
@@ -55,6 +58,14 @@ public class ForecastFragment extends Fragment {
 
         ListView forecastList = (ListView) rootView.findViewById(R.id.list_view_forecast);
         forecastList.setAdapter(forecastAdapter);
+        forecastList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                intent.putExtra("Forecast Data",forecastAdapter.getItem(i));
+                startActivity(intent);
+            }
+        });
         return rootView;
         }
     @Override
