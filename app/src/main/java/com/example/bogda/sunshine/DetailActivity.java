@@ -3,10 +3,13 @@ package com.example.bogda.sunshine;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this,SettingsActivity.class));
             return true;
         }
 
@@ -44,8 +48,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public static class PlaceholderFragment extends Fragment {
-
+        String forecastStr;
         public PlaceholderFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -59,7 +64,25 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             TextView forecastInfo = (TextView) view.findViewById(R.id.detail_fragment_forecast_text);
-            forecastInfo.setText(getActivity().getIntent().getExtras().getString("Forecast Data"));
+            forecastStr = getActivity().getIntent().getExtras().getString("Forecast Data");
+            forecastInfo.setText(forecastStr);
+        }
+        private Intent createShareForecastIntent(){
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT,forecastStr + "#SunshineApp");
+            return shareIntent;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.detailfragment, menu);
+            MenuItem menuItem = menu.findItem(R.id.menu_item_share);
+            ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            if(shareActionProvider!=null){
+                shareActionProvider.setShareIntent(createShareForecastIntent());
+            }
         }
     }
 }
