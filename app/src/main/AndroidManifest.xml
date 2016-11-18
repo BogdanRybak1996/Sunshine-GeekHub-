@@ -28,6 +28,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.bogda.sunshine.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.example.bogda.sunshine.app"
+            android:name=".data.WeatherProvider"/>
     </application>
-
 </manifest>
