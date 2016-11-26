@@ -30,6 +30,13 @@
         </activity>
         <provider
             android:authorities="com.example.bogda.sunshine.app"
-            android:name=".data.WeatherProvider"/>
+            android:name=".data.WeatherProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.example.bogda.LICENSE_TO_KILL"/>
     </application>
+    <permission android:name="com.example.bogda.LICENSE_TO_KILL"
+        android:protectionLevel="dangerous"
+        android:label="Licensed to Kill">
+    </permission>
 </manifest>
